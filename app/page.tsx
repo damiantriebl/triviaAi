@@ -6,7 +6,6 @@ import { npc } from '@/schemas/constants'
 import Character from '@/ui/Character';
 import ApiCall from 'conections/ApiCall';
 import Gear from '@/ui/gear';
-import Arrow from '@/ui/arrow';
 import SettingsMenu from '@/ui/SettingsMenu';
 
 const Page = () => {

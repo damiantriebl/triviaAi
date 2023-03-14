@@ -13,7 +13,7 @@ interface message {
     content: string
 }
 
-const messages: message[] = [{ "role": "user", "content": initialPrompt }]
+const messages: message[] = [{ "role": "system", "content": initialPrompt }]
 
 const ApiCall = async (responseDialog: any | null) => {
     if (responseDialog) {
