@@ -1,0 +1,7 @@
+{ 
+    "personaje": "Margaret", 
+    "dialogo": "let queda encapsulada en el scope, mientras que var es global",
+   "topico": "javascript",  
+   "idioma": "español" , 
+   "dificultad": 1 
+}

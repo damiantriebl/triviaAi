@@ -7,7 +7,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      // https://vercel.com/design/color
       colors: {
         vercel: {
           pink: '#FF0080',
