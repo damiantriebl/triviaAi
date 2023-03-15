@@ -1,3 +1,1 @@
-export const ObteinJson = () => {
-
-}
+export const ObteinJson = () => {};

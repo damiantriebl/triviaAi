@@ -1,6 +1,6 @@
 import '@/styles/globals.css';
 import React from 'react';
-import { Press_Start_2P } from "next/font/google";
+import { Press_Start_2P } from 'next/font/google';
 
 const press2p = Press_Start_2P({
   weight: '400',
@@ -20,7 +20,8 @@ export default function RootLayout({
         <title>IA Trivia</title>
       </head>
       <body className={`${press2p.className} overflow-hidden bg-zinc-900`}>
-        <div className="absolute bg-[url('./background.svg')] bg-cover w-fit h-fit 		">
+        <div className="absolute h-fit w-fit bg-[url('./background.svg')] bg-cover 		">
+          la data es? {process.env.data}
           {children}
         </div>
       </body>
