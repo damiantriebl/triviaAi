@@ -1,38 +1,67 @@
 'use client';
-import { useState, MouseEventHandler, SetStateAction, useEffect } from 'react';
+import { useState } from 'react';
+
 import Image from 'next/image';
 import { npc } from '@/schemas/constants';
-import getData from '@/lib/ApiCall';
 import { dialog } from '@/schemas/dialogSchema';
+
+interface message {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+}
 interface CharacterInterface {
   dialogSet: (name: npc, response: boolean) => void;
   name: npc;
   answered: boolean;
   dialog?: string | null;
+  context: message[]
   configuration: {
     topic: string;
     language: string;
     difficulty: string;
   };
 }
-// a image of a old rpg game character, with a image and a text to show the dialog
-export const Character = (character: CharacterInterface) => {
+
+
+const Character = (character: CharacterInterface) => {
   const [response, setResponse] = useState('');
   const [call, setCall] = useState(character.dialog);
   const [loading, setLoading] = useState(false);
 
   const handleDialog = async () => {
-    setLoading(true);
-    const caller: string = (await getData({
-      character: character.name,
-      dialog: response.length > 0 ? response : null,
-      topic: character.configuration.topic,
-      language: character.configuration.language,
-      difficulty: character.configuration.difficulty,
-    })) as string;
+    setLoading(true)
+    const body = JSON.stringify({
+      context: character.context,
+      prompt: {
+        character: character.name,
+        dialog: response.length > 0 ? response : `ask me a question of ${character.configuration.difficulty} difficulty about ${character.configuration.topic}`,
+        topic: character.configuration.topic,
+        language: character.configuration.language,
+        difficulty: character.configuration.difficulty,
+      },
+      max_tokens: 100,
+      temperature: 0.9,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0.6,
+      role: 'user'
+    })
+    console.log('se envia el body', body)
+    const caller = await fetch('http://localhost:5000/api/chatgpt', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body
+    })
+
+    console.log('y si algo pasa o no pasa?', caller)
+
     try {
       if (caller) {
-        obtainJson(caller);
+        const data = await caller.json()
+        obtainJson(data);
       }
     } catch (e) {
       console.log(e);
@@ -42,18 +71,20 @@ export const Character = (character: CharacterInterface) => {
     setResponse(e.currentTarget.value);
   };
 
-  const obtainJson = (caller: string) => {
-    const characterName =
-      character.name.charAt(0).toUpperCase() + character.name.slice(1) + ': ';
-    const jsonModified = caller?.split(characterName)[0];
-    const jsonCaller: dialog = JSON.parse(jsonModified) as dialog;
-    setCall(jsonCaller.dialog);
-    if (jsonCaller.response) {
-      character.dialogSet(character.name, true);
+  const obtainJson = (caller: message) => {
+    try {
+      const jsonCaller: dialog = JSON.parse(caller.content) as dialog;
+      setCall(jsonCaller.dialog);
+      if (jsonCaller.answered) {
+        character.dialogSet(character.name, true);
+      }
+    } catch {
+      setCall(caller.content);
     }
     setResponse('');
     setLoading(false);
   };
+
   return (
     <div
       className="flex h-[13rem] w-[30rem] place-items-center justify-end	"
@@ -100,3 +131,4 @@ export const Character = (character: CharacterInterface) => {
     </div>
   );
 };
+export default Character;

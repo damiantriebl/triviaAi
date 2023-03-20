@@ -14,6 +14,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  console.log('enviroment Variable', process.env.apiKEY)
   return (
     <html className={press2p.className}>
       <head>
@@ -21,7 +22,6 @@ export default function RootLayout({
       </head>
       <body className={`${press2p.className} overflow-hidden bg-zinc-900`}>
         <div className="absolute h-fit w-fit bg-[url('./background.svg')] bg-cover 		">
-          la data es? {process.env.data}
           {children}
         </div>
       </body>

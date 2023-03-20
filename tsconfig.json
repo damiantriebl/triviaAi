@@ -20,7 +20,8 @@
       "@/ui/*": ["ui/*"],
       "@/lib/*": ["lib/*"],
       "@/styles/*": ["styles/*"],
-      "@/schemas/*": ["schemas/*"]
+      "@/schemas/*": ["schemas/*"],
+      "@/hooks/*": ["hooks/*"]
 
     },
     "plugins": [

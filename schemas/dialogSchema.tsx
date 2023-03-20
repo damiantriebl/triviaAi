@@ -6,5 +6,5 @@ export interface dialog {
   topic: string; // programming language, default javascript
   language: string; // language of the dialogs, by default English
   difficulty: number; // difficulty of the question to ask
-  response: boolean;
+  answered: boolean;
 }
